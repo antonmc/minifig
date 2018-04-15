@@ -29,6 +29,7 @@ var prefix = folder + body + "/prefix.svg";
 var postfix = folder + body + "/postfix.svg";
 var style = folder + body + "/style.svg";
 var hair = folder + hair + "/hair" + getRandomInt(3) + ".svg"
+var face = folder + face + "/face0.svg";
 var base = folder + body + "/base.svg"
 
 // write the style file
@@ -55,6 +56,7 @@ fs.writeFile(style, styleblock, function(err) {
     prefix,
     style,
     base,
+    face,
     hair,
     postfix
   ], 'test.svg', function(err) {
@@ -78,9 +80,12 @@ fs.writeFile(style, styleblock, function(err) {
     var sweater = '.sweater{fill:' + sweatercolor + ';stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;}\n';
     var hair = '.hair{fill:' + haircolor + ';}\n'
 
+    var eyes = '.eyes{stroke:#000000;stroke-width:2;stroke-miterlimit:10;}\n';
+  	var mouth = '.mouth{fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;}\n';
+
     var close = '</style>'
 
-    var style = open + background + skin + sweater + hair + close;
+    var style = open + background + skin + sweater + eyes + mouth + hair + face + close;
 
     return style;
   }
