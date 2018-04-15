@@ -12,6 +12,28 @@ var app = express();
 // serve the files out of ./public as our main files
 app.use(express.static(__dirname + '/public'));
 
+app.use('/minifig', function(req,res, next){
+
+res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+res.header('Expires', '-1');
+res.header('Pragma', 'no-cache');
+
+
+  // fs.unlink('/public/test.svg', function(error) {
+  //     if (error) {
+  //         throw error;
+  //     }
+  //     console.log('Deleted test.svg');
+  // });
+
+  createMiniFigure();
+
+  res.sendFile(__dirname + '/public/test.svg');
+
+  console.log('called minifig')
+
+})
+
 // get the app environment from Cloud Foundry
 var appEnv = cfenv.getAppEnv();
 
@@ -28,8 +50,8 @@ var face = "/face";
 var prefix = folder + body + "/prefix.svg";
 var postfix = folder + body + "/postfix.svg";
 var style = folder + body + "/style.svg";
-var hair = folder + hair + "/hair" + getRandomInt(3) + ".svg"
-var face = folder + face + "/face0.svg";
+var hair = folder + hair + "/hair" + getRandomInt(4) + ".svg"
+var face = folder + face + "/face" + getRandomInt(4) + ".svg";
 var base = folder + body + "/base.svg"
 
 // write the style file
@@ -51,7 +73,7 @@ fs.writeFile(style, styleblock, function(err) {
 
 // concatenate the minifig file
 
-
+function createMiniFigure(){
   concat([
     prefix,
     style,
@@ -59,12 +81,13 @@ fs.writeFile(style, styleblock, function(err) {
     face,
     hair,
     postfix
-  ], 'test.svg', function(err) {
+  ], 'public/test.svg', function(err) {
     if (err) throw err
     console.log('done');
   });
+}
 
-
+createMiniFigure();
 
 
   function getRandomInt(max) {
