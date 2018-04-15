@@ -47,27 +47,57 @@ var body = "/body";
 var hair = "/hair";
 var face = "/face";
 
+var hairstyles;
+var faces;
+
 var prefix = folder + body + "/prefix.svg";
 var postfix = folder + body + "/postfix.svg";
 var style = folder + body + "/style.svg";
-var hair = folder + hair + "/hair" + getRandomInt(4) + ".svg"
-var face = folder + face + "/face" + getRandomInt(4) + ".svg";
+var hair
+var face
 var base = folder + body + "/base.svg"
 
-// write the style file
+fs.readdir(folder + hair, (err, files) => {
 
-var randomHair = haircolors[getRandomInt(haircolors.length)]
-var randomSkin = skincolors[getRandomInt(skincolors.length)]
-var randomSweater = sweatercolors[getRandomInt(sweatercolors.length)]
+  // count number of hairstyles
 
-var styleblock = createStyle(randomSkin, randomHair, randomSweater)
+  hairstyles = files.length;
+  console.log(hairstyles)
 
-fs.writeFile(style, styleblock, function(err) {
-    if(err) {
-        return console.log(err);
-    }
+  // count number of faces
 
-    console.log("Generated Style Data");
+  fs.readdir(folder + face, (err, files) => {
+    faces = files.length;
+
+    // write the style file
+
+    //  find random colors
+
+    var randomHair = haircolors[getRandomInt(haircolors.length)]
+    var randomSkin = skincolors[getRandomInt(skincolors.length)]
+    var randomSweater = sweatercolors[getRandomInt(sweatercolors.length)]
+
+    var styleblock = createStyle(randomSkin, randomHair, randomSweater)
+
+    fs.writeFile(style, styleblock, function(err) {
+        if(err) {
+            return console.log(err);
+        }
+
+        // find a random hairstyle
+
+        hair = folder + hair + "/hair" + getRandomInt(hairstyles) + ".svg"
+
+        // find a random face
+
+        face = folder + face + "/face" + getRandomInt(faces) + ".svg";
+
+        createMiniFigure();
+
+        console.log("Generated Style Data");
+    });
+
+  });
 });
 
 
@@ -87,7 +117,6 @@ function createMiniFigure(){
   });
 }
 
-createMiniFigure();
 
 
   function getRandomInt(max) {
