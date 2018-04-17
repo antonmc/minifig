@@ -1,5 +1,8 @@
 var concat = require('concat-files');
 var fs = require('fs');
+var base64Img = require('base64-img');
+
+var destination = './output.svg';
 
 // paths for reading svg fragments
 
@@ -9,12 +12,21 @@ var body = "/body";
 var hair = "/hair";
 var face = "/face";
 
+var hairstyles;
+var faces;
+
+var prefix = folder + body + "/prefix.svg";
+var postfix = folder + body + "/postfix.svg";
+var style = folder + body + "/style.svg";
+var hairfile;
+var facefile;
+var base = folder + body + "/base.svg"
+
 // style/color collections for skin, hair, clothes
 
 var skincolors = ["#f9ac2f", "#a67c52"];
 var haircolors = ["#754c24", "#c7b299", "#a54632", "#42210b"];
 var sweatercolors = ["#f7cee0", "#c3dbd4", "#b61c50", "#6c4e79", "#223a5e", "#64bfa4", "#fe840e"];
-
 
 function createStyle(skincolor, haircolor, sweatercolor) {
 
@@ -37,56 +49,45 @@ function createStyle(skincolor, haircolor, sweatercolor) {
 
 // concatenate the minifig file
 
-function createMiniFigure() {
+function createMiniFigure(callback) {
   concat([
     prefix,
     style,
     base,
-    face,
-    hair,
+    facefile,
+    hairfile,
     postfix
-  ], 'public/test.svg', function(err) {
+  ], destination, function(err) {
     if (err) throw err
     console.log('done');
+    var s =  fs.readFileSync(destination).toString()
+    callback(s)
   });
 }
 
+function getString(destination) {
 
+  var data = fs.readFileSync(destination).toString();
+  return data;
+}
 
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
 
-var hairstyles;
-var faces;
-
-var prefix = folder + body + "/prefix.svg";
-var postfix = folder + body + "/postfix.svg";
-var style = folder + body + "/style.svg";
-var hair
-var face
-var base = folder + body + "/base.svg"
 
 module.exports = {
 
-  makeAvatar: function() {
+  makeSVG: function(call) {
 
     fs.readdir(folder + hair, (err, files) => {
-
-      // count number of hairstyles
 
       hairstyles = files.length;
       console.log(hairstyles)
 
-      // count number of faces
-
       fs.readdir(folder + face, (err, files) => {
         faces = files.length;
-
-        // write the style file
-
-        //  find random colors
 
         var randomHair = haircolors[getRandomInt(haircolors.length)]
         var randomSkin = skincolors[getRandomInt(skincolors.length)]
@@ -101,18 +102,25 @@ module.exports = {
 
           // find a random hairstyle
 
-          hair = folder + hair + "/hair" + getRandomInt(hairstyles) + ".svg"
+          hairfile = folder + hair + "/hair" + getRandomInt(hairstyles) + ".svg"
 
           // find a random face
 
-          face = folder + face + "/face" + getRandomInt(faces) + ".svg";
+          facefile = folder + face + "/face" + getRandomInt(faces) + ".svg";
 
-          createMiniFigure();
+          var svg;
 
+          var stuff = createMiniFigure(call);
           console.log("Generated Style Data");
         });
-
       });
-    });
+    })
+  },
+
+  makeBase64:function(call){
+    this.makeSVG(function(){
+      var data = base64Img.base64Sync(destination);
+      call(data)
+    })
   }
 }

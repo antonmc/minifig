@@ -23,7 +23,7 @@ app.use('/minifig', function(req, res, next) {
 
 })
 
-minifig.makeAvatar();
+minifig.makeSVG();
 
 
 // start server on the specified port and binding host
