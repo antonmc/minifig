@@ -4,7 +4,6 @@ Minifig is a random avatar generator that makes lego minifigure style avatars.
 
 ## Installation
 
-
 Using npm:
 ```shell
 $ npm i -g npm
@@ -15,19 +14,20 @@ In Node.js:
 ```js
 var minifig = require('minifig');
 
-var svgString = minifig.makeSVG();
-var base64 = minifig.makeBase64();
+var svgString;
+
+minifig.makeSVG(function(stuff){
+  svgString = stuff;
+});
+
+var base64String;
+
+minifig.makeBase64(function(stuff){
+  base64String = stuff;
+});
 
 ```
 
-**Note:**<br>
-Install [n_](https://www.npmjs.com/package/n_) for Lodash use in the Node.js < 6 REPL.
+## Why Minifig?
 
-## Why Lodash?
-
-Lodash makes JavaScript easier by taking the hassle out of working with arrays,<br>
-numbers, objects, strings, etc. Lodash’s modular methods are great for:
-
- * Iterating arrays, objects, & strings
- * Manipulating & testing values
- * Creating composite functions
+Have you ever needed a bunch of avatars for a mockup, or to randomly assign an avatar to a new user etc? Minifig has you covered ;)
