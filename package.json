@@ -1,6 +1,6 @@
 {
   "name": "minifig",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Generates random Lego style avatars from a collection of parts ( hair, face, body ) and colors.",
   "main": "minifig.js",
   "dependencies": {
