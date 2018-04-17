@@ -1,8 +1,8 @@
 <style type="text/css">
 .background{fill:#F4F5F0;}
-.skin{fill:#f9ac2f;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;}
+.skin{fill:#a67c52;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;}
 .sweater{fill:#223a5e;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;}
 .eyes{stroke:#000000;stroke-width:2;stroke-miterlimit:10;}
 .mouth{fill:none;stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;}
-.hair{fill:#c7b299;}
+.hair{fill:#754c24;}
 /face</style>

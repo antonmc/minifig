@@ -1,4 +1,4 @@
-var concat = require('concat-files');
+var concat = require('concat');
 var fs = require('fs');
 var path = require('path');
 var base64Img = require('base64-img');
@@ -53,20 +53,29 @@ function createStyle(skincolor, haircolor, sweatercolor) {
 // concatenate the minifig file
 
 function createMiniFigure(callback) {
-  concat([
-    prefix,
+  concat([prefix,
     style,
     base,
     facefile,
     hairfile,
     postfix
-  ], destination, function(err) {
-    if (err) throw err
-    console.log('done');
-    var s =  fs.readFileSync(destination).toString()
-    callback(s)
-  });
+  ]).then(result => callback(result))
 }
+
+//   concat([
+//     prefix,
+//     style,
+//     base,
+//     facefile,
+//     hairfile,
+//     postfix
+//   ], destination, function(err) {
+//     if (err) throw err
+//     console.log('done');
+//     var s =  fs.readFileSync(destination).toString()
+//     callback(s)
+//   });
+// }
 
 function getString(destination) {
 
@@ -77,8 +86,6 @@ function getString(destination) {
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
-
-
 
 module.exports = {
 
@@ -120,8 +127,8 @@ module.exports = {
     })
   },
 
-  makeBase64:function(call){
-    this.makeSVG(function(){
+  makeBase64: function(call) {
+    this.makeSVG(function() {
       var data = base64Img.base64Sync(destination);
       call(data)
     })
