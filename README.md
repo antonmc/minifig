@@ -2,7 +2,7 @@
 
 Minifig is a random avatar generator that makes lego minifigure style avatars.
 
-![Alt text](./output.svg)
+![Alt text](https://raw.githubusercontent.com/antonmc/minifig/HEAD/output.svg?sanitize=true)
 
 ## Installation
 
