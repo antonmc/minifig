@@ -9,14 +9,14 @@ var destination = './output.svg';
 
 var folder = path.join(__dirname, "frankenstein")
 
-console.log(folder)
+var callback;
 
 var body = "/body";
 var hair = "/hair";
 var face = "/face";
 
-var hairstyles;
-var faces;
+var hairstyleCount;
+var faceCount;
 
 var prefix = folder + body + "/prefix.svg";
 var postfix = folder + body + "/postfix.svg";
@@ -24,6 +24,8 @@ var style = folder + body + "/style.svg";
 var hairfile;
 var facefile;
 var base = folder + body + "/base.svg"
+
+var styleblock;
 
 // style/color collections for skin, hair, clothes
 
@@ -62,21 +64,6 @@ function createMiniFigure(callback) {
   ]).then(result => callback(result))
 }
 
-//   concat([
-//     prefix,
-//     style,
-//     base,
-//     facefile,
-//     hairfile,
-//     postfix
-//   ], destination, function(err) {
-//     if (err) throw err
-//     console.log('done');
-//     var s =  fs.readFileSync(destination).toString()
-//     callback(s)
-//   });
-// }
-
 function getString(destination) {
 
   var data = fs.readFileSync(destination).toString();
@@ -87,42 +74,45 @@ function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
+function buildSVG(data){
+  var stuff = fs.readFileSync(prefix).toString()
+  var firstblock = stuff.concat(styleblock);
+  var svg = firstblock.concat(data);
+  console.log(svg)
+  callback(svg)
+}
+
 module.exports = {
 
   makeSVG: function(call) {
 
+    callback = call;
+
     fs.readdir(folder + hair, (err, files) => {
 
-      hairstyles = files.length;
-      console.log(hairstyles)
+      hairstyleCount = files.length;
 
       fs.readdir(folder + face, (err, files) => {
-        faces = files.length;
+
+        faceCount = files.length;
 
         var randomHair = haircolors[getRandomInt(haircolors.length)]
         var randomSkin = skincolors[getRandomInt(skincolors.length)]
         var randomSweater = sweatercolors[getRandomInt(sweatercolors.length)]
 
-        var styleblock = createStyle(randomSkin, randomHair, randomSweater)
+        styleblock = createStyle(randomSkin, randomHair, randomSweater)
 
-        fs.writeFile(style, styleblock, function(err) {
-          if (err) {
-            return console.log(err);
-          }
+        // find a random hair and face
 
-          // find a random hairstyle
+        hairfile = folder + hair + "/hair" + getRandomInt(hairstyleCount) + ".svg"
+        facefile = folder + face + "/face" + getRandomInt(faceCount) + ".svg";
 
-          hairfile = folder + hair + "/hair" + getRandomInt(hairstyles) + ".svg"
-
-          // find a random face
-
-          facefile = folder + face + "/face" + getRandomInt(faces) + ".svg";
-
-          var svg;
-
-          var stuff = createMiniFigure(call);
-          console.log("Generated Style Data");
-        });
+        concat([
+          base,
+          facefile,
+          hairfile,
+          postfix
+        ]).then(result => buildSVG(result))
       });
     })
   },
