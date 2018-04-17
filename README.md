@@ -2,6 +2,8 @@
 
 Minifig is a random avatar generator that makes lego minifigure style avatars.
 
+![Alt text](./output.svg)
+
 ## Installation
 
 Using npm:
