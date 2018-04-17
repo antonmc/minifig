@@ -1,12 +1,15 @@
 var concat = require('concat-files');
 var fs = require('fs');
+var path = require('path');
 var base64Img = require('base64-img');
 
 var destination = './output.svg';
 
 // paths for reading svg fragments
 
-var folder = "./node_modules/minifig/frankenstein";
+var folder = path.join(__dirname, "frankenstein")
+
+console.log(folder)
 
 var body = "/body";
 var hair = "/hair";

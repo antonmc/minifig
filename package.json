@@ -8,7 +8,8 @@
     "cfenv": "1.0.4",
     "concat-files": "0.1.1",
     "express": "4.16.3",
-    "fs": "0.0.1-security"
+    "fs": "0.0.1-security",
+    "path": "^0.12.7"
   },
   "devDependencies": {},
   "scripts": {
