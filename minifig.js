@@ -6,7 +6,7 @@ var destination = './output.svg';
 
 // paths for reading svg fragments
 
-var folder = "frankenstein";
+var folder = "./node_modules/minifig/frankenstein";
 
 var body = "/body";
 var hair = "/hair";
