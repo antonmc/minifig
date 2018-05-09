@@ -22,11 +22,16 @@ minifig.makeSVG(function(stuff){
   svgString = stuff;
 });
 
-var base64String;
+or
 
-minifig.makeBase64(function(stuff){
-  base64String = stuff;
-});
+var theme = { background:"#E5F5FB", colors:["#5ebd3e", "#ffb900", "#f78200", "#e23838", "#973999", "#009cdf"]}
+
+minifig.makeSVG(function(stuff){
+  svgString = stuff;
+}, theme);
+
+
+
 
 ```
 
