@@ -29,6 +29,7 @@ var styleblock;
 
 // style/color collections for skin, hair, clothes
 
+var backgroundcolor = "#F4F5F0";
 var skincolors = ["#f9ac2f", "#a67c52"];
 var haircolors = ["#754c24", "#c7b299", "#a54632", "#42210b"];
 var sweatercolors = ["#f7cee0", "#c3dbd4", "#b61c50", "#6c4e79", "#223a5e", "#64bfa4", "#fe840e"];
@@ -36,7 +37,11 @@ var sweatercolors = ["#f7cee0", "#c3dbd4", "#b61c50", "#6c4e79", "#223a5e", "#64
 function createStyle(skincolor, haircolor, sweatercolor) {
 
   var open = '<style type="text/css">\n'
-  var background = '.background{fill:#F4F5F0;}\n'
+  var background = '.background{fill:' + backgroundcolor + ';}\n'
+
+
+
+
 
   var skin = '.skin{fill:' + skincolor + ';stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;}\n';
   var sweater = '.sweater{fill:' + sweatercolor + ';stroke:#000000;stroke-width:2;stroke-linecap:round;stroke-miterlimit:10;}\n';
@@ -52,20 +57,8 @@ function createStyle(skincolor, haircolor, sweatercolor) {
   return style;
 }
 
-// concatenate the minifig file
-
-function createMiniFigure(callback) {
-  concat([prefix,
-    style,
-    base,
-    facefile,
-    hairfile,
-    postfix
-  ]).then(result => callback(result))
-}
 
 function getString(destination) {
-
   var data = fs.readFileSync(destination).toString();
   return data;
 }
@@ -78,13 +71,25 @@ function buildSVG(data){
   var stuff = fs.readFileSync(prefix).toString()
   var firstblock = stuff.concat(styleblock);
   var svg = firstblock.concat(data);
-  console.log(svg)
   callback(svg)
 }
 
 module.exports = {
 
-  makeSVG: function(call) {
+  makeSVG: function(call, theme) {
+
+    // theme looks like: { background: "#123456", colors:["#123456","#123456","#123456","#123456","#123456"]}
+
+    if( theme != null ){
+
+        if( theme.background != null ){
+          backgroundcolor = theme.background;
+        }
+
+        if( theme.colors != null ){
+            sweatercolors = theme.colors;
+        }
+    }
 
     callback = call;
 
@@ -114,13 +119,6 @@ module.exports = {
           postfix
         ]).then(result => buildSVG(result))
       });
-    })
-  },
-
-  makeBase64: function(call) {
-    this.makeSVG(function() {
-      var data = base64Img.base64Sync(destination);
-      call(data)
     })
   }
 }
